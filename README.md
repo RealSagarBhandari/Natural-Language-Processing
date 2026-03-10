@@ -154,3 +154,45 @@ The evaluation revealed a clear hierarchy in ROUGE performance based on dataset 
 
 
 
+## 4.  [B1_Chat_Conversation_and_Models.ipynb](https://github.com/RealSagarBhandari/Natural-Language-Processing/blob/main/B1_Chat_Conversation_and_Models.ipynb)
+
+
+
+## SLM Conversational AI & Model Benchmarking
+
+##  Overview
+This repository focuses on the implementation and rigorous evaluation of **Small Language Models (SLMs)** for conversational AI. While massive LLMs dominate the landscape, SLMs offer a highly efficient, edge-deployable alternative. 
+
+This project demonstrates how to build a multi-turn chatbot using the Hugging Face `text-generation` pipeline, manage conversational memory (state), and construct custom empirical benchmarks to test reasoning, factual retrieval, and instruction-following limits in sub-billion parameter models.
+
+
+---
+
+##  Key Capabilities & Technical Scope
+
+* **Multi-Turn State Management:** Engineered a continuous conversational loop that dynamically updates and passes chat history (system, user, and assistant roles) to maintain context across multiple interactions.
+* **Pipeline Implementation:** Leveraged Hugging Face's `pipeline` and `accelerate` libraries for optimized model loading and hardware-accelerated inference.
+* **Custom Benchmarking Suite:** Designed an adversarial prompt evaluation framework ("Animal Trivia & Jokes") designed to test specific model vulnerabilities:
+  * *Formatting Constraints* (e.g., "exactly one sentence").
+  * *Logical Reasoning vs. Hallucination* (e.g., assessing impossible scenarios like a bear vs. shark playing chess).
+  * *Factual Retrieval Accuracy.*
+
+---
+
+##  Models Evaluated
+The project directly compares two highly optimized instruct-tuned SLMs:
+1. **[Qwen/Qwen2.5-0.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct):** A highly capable 0.5 billion parameter model.
+2. **[HuggingFaceTB/SmolLM2-360M-Instruct](https://huggingface.co/HuggingFaceTB/SmolLM2-360M-Instruct):** A lightweight 360 million parameter model designed for extreme efficiency.
+
+---
+
+##  Empirical Insights & Findings
+Testing revealed fascinating behaviors and limitations inherent to sub-billion parameter architectures:
+
+* **Instruction Adherence:** Smaller models struggle with strict formatting constraints. While factual retrieval (e.g., cheetah top speeds) is generally accurate, instructions like "reply in exactly one sentence" frequently result in run-on sentences or multi-sentence failures.
+* **Reasoning vs. Hallucination:** When faced with abstract or nonsensical reasoning tasks (the bear vs. shark chess match), both models struggled to break out of their training distribution. Instead of logically deducing the physical impossibility of the scenario, both models hallucinated complex, anthropomorphized strategies or injected unrelated human elements.
+* **Overall Verdict:** While SLMs are remarkably capable for basic text generation and localized factual retrieval, they require heavy guardrails for logic-based or strictly formatted tasks. In this specific benchmark, **Qwen2.5-0.5B-Instruct** demonstrated a slight edge in strict instruction following over SmolLM2.
+
+---
+
+
