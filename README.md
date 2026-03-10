@@ -196,3 +196,113 @@ Testing revealed fascinating behaviors and limitations inherent to sub-billion p
 ---
 
 
+
+## 5. [B2_LLM_with_API.ipynb](https://github.com/RealSagarBhandari/Natural-Language-Processing/blob/main/B2_LLM_with_API.ipynb)
+
+
+##  Cloud-Scale LLMs & Agentic Tool Calling via Web API
+
+
+
+##  Overview
+This repository explores the architecture and implementation of accessing Large Language Models (LLMs) via Web APIs, transitioning from local computational constraints to scalable, cloud-based inference. 
+
+Crucially, this project demonstrates **LLM Tool Calling (Function Calling)**. By engineering models to not just generate text, but to formulate executable code and API queries, this notebook showcases how to transform static conversational models into dynamic, action-oriented **AI Agents** capable of interacting with the external world (e.g., triggering real-time web searches).
+
+
+---
+
+##  Key Capabilities & Technical Scope
+
+* **Cloud API Integration:** Implements robust connections to commercial LLM endpoints (e.g., OpenAI) to leverage parameter sizes far exceeding local hardware capabilities.
+* **Agentic Tool Calling:** Designs prompts and parses complex API response objects to execute specific tools. Demonstrates how an LLM can formulate structured JSON actions (like searching for *"Drake Bulldogs basketball 2025-26 record"*) rather than hallucinating outdated information.
+* **Complex Response Parsing:** Deep dive into the anatomy of modern LLM API responses, extracting metadata, token usage, and nested tool-call arguments.
+* **Adversarial & Edge-Case Benchmarking:** Tests models against temporal hallucinations (e.g., asking about future events in 2035) and security-oriented roleplay (e.g., penetration testing a university Wi-Fi network) to evaluate guardrails and reasoning capabilities.
+
+---
+
+
+## Empirical Insights & Findings
+
+1. **Beyond Text Generation:** The true power of modern LLMs lies in their ability to act as reasoning engines. By equipping them with tools, we bypass the inherent limitation of training data cut-off dates.
+2. **Deterministic Outputs from Probabilistic Models:** Tool calling requires the LLM to output perfectly structured data (usually JSON) to trigger external functions. This requires sophisticated prompt templates and reliable API endpoints.
+3. **Handling Hallucinations via Search:** When asked about highly specific, localized events (e.g., a specific university coding club meeting), models without tool access will inevitably hallucinate. Equipping them with a search tool bridges the gap between reasoning and factual accuracy.
+
+---
+
+
+## 6. [B3_Markov_Models.ipynb](https://github.com/RealSagarBhandari/Natural-Language-Processing/blob/main/B3_Markov_Models.ipynb)
+
+
+
+## NLP Text Generation with Markov Models
+
+
+
+##  Overview
+This notebook features a ground-up engineering implementation of **Markov Models** for Natural Language Processing (NLP) and probabilistic text generation. Moving beyond basic implementations, this notebook explores the structural foundations of n-gram language models, demonstrating how dynamic frequency mapping and state-transition probabilities can simulate human-like text generation.
+
+The project highlights the evolution from simple 1st-order chains to complex **Higher-Order Markov Models** (up to 5th-order), critically analyzing the fundamental trade-offs between training data memorization and generative creativity.
+
+
+
+---
+
+##  Key Capabilities & Technical Scope
+* **Custom Model Architecture:** Engineered a scalable Python class (`MarkovModel`) utilizing highly optimized nested dictionaries (`defaultdict`) and tuples to handle dynamic frequency counts across massive corpora without memory bottlenecks.
+* **Higher-Order Context Management:** Implemented variable-order ($n$-order) Markov chains. By mapping $n$-tuples of historical words to transition probability spaces, the model effectively simulates varying levels of context windows (the precursor to modern LLM attention mechanisms).
+* **Directed Graph Visualization:** Integrated `networkx` and `matplotlib` to programmatically render visual network graphs (DiGraphs) of word transitions, mapping edge weights and mathematical probabilities.
+* **Corpus Integration:** Leveraged the Natural Language Toolkit (`nltk`) to programmatically fetch, tokenize, and train models on large-scale literary datasets via Project Gutenberg.
+
+---
+
+## Datasets Utilized
+To test the capture of complex, highly stylized lexicons, the models were trained and benchmarked on classic literature:
+1. **Herman Melville's *Moby Dick*** 2. **John Milton's *Paradise Lost***
+3. **William Shakespeare's *Hamlet*** ("To be, or not to be" soliloquy)
+
+---
+
+##  Empirical Insights & Findings
+Testing the text generation engine across 1st, 2nd, 3rd, 4th, and 5th-order context windows revealed the core paradox of n-gram language models:
+
+* **1st & 2nd Order (High Variance, Low Coherence):** Generates highly "creative" but syntactically chaotic text. The model frequently jumps between unrelated concepts that share common connector words, resulting in structural nonsense.
+* **3rd to 5th Order (High Coherence, Zero Variance):** As the order ($n$) increases, the structural and grammatical integrity of the text improves dramatically. However, the model rapidly loses its generative flexibility. By the 5th order, the model effectively overfits—memorizing and regurgitating verbatim passages from the training data, completely sacrificing creativity for accuracy.
+* **The LLM Connection:** This experiment practically demonstrates the concepts outlined by Stephen Wolfram regarding text generation. While simple Markov probabilistic models are powerful, they expose why modern architectures require dense, semantic latent spaces (neural networks) to balance grammatical correctness with true creativity.
+
+---
+
+
+## 7. [B4_BPE_and_SubwordTokenization.ipynb](https://github.com/RealSagarBhandari/Natural-Language-Processing/blob/main/B4_BPE_and_SubwordTokenization.ipynb)
+
+
+##  Subword Tokenization & Byte-Pair Encoding (BPE)
+
+
+##  Overview
+This repository bridges the gap between classical Natural Language Processing and modern Large Language Model (LLM) architectures. It deeply explores **Subword Tokenization** and **Byte-Pair Encoding (BPE)**—the foundational data processing algorithms used by state-of-the-art models like GPT-4, Llama 3, and SmolLM.
+
+Beyond just using pre-built tokenizers, this project manually traces the BPE training algorithm (token merging frequencies) and culminates in a unique engineering experiment: injecting Hugging Face BPE subword tokens into a custom-built **Subword Markov Model** to generate text.
+
+
+---
+
+##  Key Capabilities & Technical Scope
+
+* **Algorithm Tracing:** Step-by-step programmatic demonstration of the BPE algorithm, showcasing how base character vocabularies iteratively merge into optimal subwords (e.g., `h`, `u`, `g` -> `h`, `ug` -> `hug`) based on corpus frequency.
+* **Hugging Face `AutoTokenizer` Deep Dive:** Unpacks the black box of modern tokenizers. Explores how capitalization, spacing, and punctuation drastically alter the generated `input_ids`, and how these IDs are structured as PyTorch tensors (`return_tensors="pt"`).
+* **Automated Data Pipelines:** Implements robust web-scraping logic using `requests` and `BeautifulSoup4` to fetch, parse, and clean raw text from unstructured HTML (Wikipedia) and plaintext sources (Project Gutenberg's *Sherlock Holmes*).
+* **Architectural Hybrid (The Subword Markov Model):** Engineered a custom `SubwordMarkovModel` class that fundamentally changes how classical n-gram models work. Instead of transitioning between whole words, the model calculates transition probabilities between **BPE subword tokens** (e.g., `ĠThe`, `ation`), successfully mimicking the exact generation mechanics of a modern LLM but using a probabilistic statistical engine.
+
+---
+
+##  Empirical Insights & Findings
+
+1. **The Vocabulary vs. Context Window Trade-off:** By utilizing subwords instead of whole words, tokenizers massively shrink the required vocabulary size (preventing Out-Of-Vocabulary `[UNK]` errors) while keeping token sequences dense enough to maximize the model's context window.
+2. **Spacing is Semantic:** Modern tokenizers treat leading spaces as distinct characters (often represented by `Ġ`). The token for `" Let"` is entirely different from `"Let"`, fundamentally changing how the downstream model interprets the sequence.
+3. **Subword Generation Dynamics:** When feeding BPE tokens into the custom Markov Model, the generated text reconstructs words dynamically from prefixes and suffixes. While a standard word-based Markov model can only output words it has explicitly seen, the Subword Markov Model can technically "invent" new words by statistically stitching together common BPE fragments.
+
+---
+
+
+
